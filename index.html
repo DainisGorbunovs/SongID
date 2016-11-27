@@ -26,10 +26,12 @@
 
         // Establish a stream and record
         var recordRTC = null;
+        var audioStream = null;
 
         function initializeRecorder() {
             $("#brand-logo")[0].textContent = "Recording";
             navigator.getUserMedia(session, function (stream) {
+                audioStream = stream;
                 recordRTC = RecordRTC(stream, {
                     recorderType: StereoAudioRecorder // optionally force WebAudio API to record audio
                 });
@@ -42,6 +44,8 @@
 
         function stopRecorder() {
             $("#brand-logo")[0].textContent = "Stopped";
+            audioStream.stop();
+            audioStream = null;
             recordRTC.stopRecording(function (audioURL) {
                 console.log(audioURL);
                 var formData = new FormData();
