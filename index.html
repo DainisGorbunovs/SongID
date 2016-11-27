@@ -13,17 +13,26 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
+    <script type="text/javascript">
+        function outputFunction(artist, title){
+            window.location.href = "index.html#result";
+            $("#artist").text(artist);
+            $("#title").text(title);
+        }
+    </script>
+
+
+
+
     <script>
         // Make getUserMedia work for any browser
         navigator.getUserMedia = navigator.getUserMedia ||
                 navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
         // In this session, record only audio
         var session = {
             audio: true,
             video: false
         };
-
         // Establish a stream and record
         var recordRTC = null;
         var audioStream = null;
@@ -36,12 +45,10 @@
                     recorderType: StereoAudioRecorder // optionally force WebAudio API to record audio
                 });
                 recordRTC.startRecording();
-
             }, function (error) {
                 console.log(error);
             });
         }
-
         function stopRecorder() {
             $("#brand-logo")[0].textContent = "Stopped";
             audioStream.stop();
@@ -50,7 +57,6 @@
                 console.log(audioURL);
                 var formData = new FormData();
                 formData.append('audio', recordRTC.getBlob());
-
                 $.ajax({
                     type: 'POST',
                     url: 'identify',
@@ -59,10 +65,12 @@
                     cache: false,
                     processData: false
                 }).done(function(data) {
-                    for (var match in data.matches) {
-                        var metadata = data.matches[match].metadata;
-                        console.log(metadata.artist + ' - ' + metadata.title);
+                    if(data.matches.length > 0){
+                        var metadata = data.matches[0].metadata;
+                        outputFunction(metadata.artist, metadata.title);
                     }
+                    else
+                        outputFunction("","");
                 });
             });
         }
@@ -94,34 +102,45 @@
     <div class="header">
        <img src="img/logo.png" id="brand-logo">
     </div>
-    
+    <a id="cancel" href="index.html">Cancel</a>
+
+    <div id="result" class="overlay">
+    <div class="popup">
+        <h2 style="text-align: center;">Result</h2>
+        <a class="close" href="#">&times;</a>
+        <div class="content">
+            <h1 id="artist"></h1>
+            <h2 id="song"></h2>
+        </div>
+    </div>
 
 
     
 
     <script type="text/javascript">
-
         function setTitle(title){
             $("#title").text(title);
             console.log(title);
         };
-
-
         $("#brand-logo").hover(function(){
             if($("#title").text() == "Start. Record. Discover.")
                 $("#title").text("Start");
         });
         $("#brand-logo").click(function(){
-            if($("#title").text() == "Start"){
+            title = $("#title").text();
+            if(title == "Start"){
                 setTitle("Listening...");
-
                 setTimeout(function() {
                     setTitle("Processing...");
                 }, 10000);
+                rotateAnimation("brand-logo", 10);
+            }
+            else if(title == "Listening..."){
+                rotateAnimation("brand-logo", 10000000000000000);
+                console.log("Hola");
             };
-            rotateAnimation("brand-logo", 10);
+            
         });
-
     </script>
     <script type="text/javascript">
         var degrees = 0;
@@ -134,8 +153,8 @@
             if(degrees > 359){
                 degrees = 1;
             }
-        }
 
+        }
     </script>
 </body>
 </html>
