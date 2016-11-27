@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//cdn.webrtc-experiment.com/RecordRTC.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+<script>
+    // Make getUserMedia work for any browser
+    navigator.getUserMedia = navigator.getUserMedia ||
+            navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+    // In this session, record only audio
+    var session = {
+        audio: true,
+        video: false
+    };
+
+    // Establish a stream and record
+    var recordRTC = null;
+</script>
+<script>
+    $(document).ready(function() {
+        var recording = false;
+        $("button")[0].addEventListener("click", function() {
+            recording = !recording;
+            if (recording === true) {
+                navigator.getUserMedia(session, function(stream) {
+                    recordRTC = RecordRTC(stream, {
+                        recorderType: StereoAudioRecorder // optionally force WebAudio API to record audio
+                    });
+                    recordRTC.startRecording();
+
+                }, function(error) {
+                    console.log(error);
+                });
+            } else {
+                recordRTC.stopRecording(function(audioURL) {
+                    mediaElement.src = audioURL;
+                });
+            }
+        });
+    });
+</script>
+<button>Start</button>
+</body>
+</html>
