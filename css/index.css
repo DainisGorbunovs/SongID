@@ -1,0 +1,47 @@
+body{
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	margin: 0;
+	padding: 0;
+	background-color: rgba(93,111,205, 1);
+
+}
+@font-face {
+    font-family: myFirstFont;
+    src: url(../fonts/Roboto-Light.ttf);
+}
+
+
+#title{
+	font-family: myFirstFont;
+	text-align: center;
+	font-size: 3.5em;
+	color: white;
+	margin-top: 2em;
+}
+
+.header{
+	margin-top: 6em;
+	width:20%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+
+
+#brand-logo{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	height: 10em;
+	width: 10em;
+	opacity: 0.5;
+	transition: opacity 1s;
+}
+
+#brand-logo:hover{
+	opacity: 0.9;
+}

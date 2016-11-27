@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+
+    <link rel="icon" type="image/png" href="img/logo.png">
+
+    <title>SongID</title>
+
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
     <script src="//cdn.webrtc-experiment.com/RecordRTC.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
@@ -22,7 +28,7 @@
         var recordRTC = null;
 
         function initializeRecorder() {
-            $("button")[0].textContent = "Recording";
+            $("#brand-logo")[0].textContent = "Recording";
             navigator.getUserMedia(session, function (stream) {
                 recordRTC = RecordRTC(stream, {
                     recorderType: StereoAudioRecorder // optionally force WebAudio API to record audio
@@ -35,7 +41,7 @@
         }
 
         function stopRecorder() {
-            $("button")[0].textContent = "Stopped";
+            $("#brand-logo")[0].textContent = "Stopped";
             recordRTC.stopRecording(function (audioURL) {
                 console.log(audioURL);
                 var formData = new FormData();
@@ -61,7 +67,7 @@
         // Record button
         $(document).ready(function () {
             var recording = false;
-            $("button")[0].addEventListener("click", function () {
+            $("#brand-logo")[0].addEventListener("click", function () {
                 recording = !recording; // change state
                 if (recording === true) {
                     initializeRecorder();
@@ -76,6 +82,56 @@
             });
         });
     </script>
-    <button>Start</button>
+
+
+
+
+    <h1 id="title">Start. Record. Discover.</h1>
+    <div class="header">
+       <img src="img/logo.png" id="brand-logo">
+    </div>
+    
+
+
+    
+
+    <script type="text/javascript">
+
+        function setTitle(title){
+            $("#title").text(title);
+            console.log(title);
+        };
+
+
+        $("#brand-logo").hover(function(){
+            if($("#title").text() == "Start. Record. Discover.")
+                $("#title").text("Start");
+        });
+        $("#brand-logo").click(function(){
+            if($("#title").text() == "Start"){
+                setTitle("Listening...");
+
+                setTimeout(function() {
+                    setTitle("Processing...");
+                }, 10000);
+            };
+            rotateAnimation("brand-logo", 10);
+        });
+
+    </script>
+    <script type="text/javascript">
+        var degrees = 0;
+        var looper;
+        function rotateAnimation(id,speed){
+            var elem = document.getElementById(id);
+            elem.style.WebkitTransform = "rotate("+degrees+"deg)";
+            looper = setTimeout('rotateAnimation(\''+id+'\','+speed+')',speed);
+            degrees++;
+            if(degrees > 359){
+                degrees = 1;
+            }
+        }
+
+    </script>
 </body>
 </html>
