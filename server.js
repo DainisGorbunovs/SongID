@@ -31,6 +31,7 @@ app.post('/identify', upload.single('audio'), function(req, res, next) {
 app.use('/js', express.static('js'));
 app.use('/img', express.static('img'));
 app.use('/css', express.static('css'));
+app.use('/fonts', express.static('fonts'));
 
 // Start the server at port 3000
 app.listen(3000, function() {
