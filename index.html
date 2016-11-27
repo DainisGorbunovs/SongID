@@ -20,6 +20,9 @@
             $("#artist").text(artist);
             $("#song").text(title);
             $("#title").text("Done");
+            $.get('/search/' + encodeURIComponent(artist + ' ' + title), function(data){
+                $('youtube').attr('src', data);
+            });
         }
     </script>
 
@@ -69,7 +72,6 @@
                 }).done(function(data) {
                     var artist = data.matches[0].metadata.artist || '';
                     var title = data.matches[0].metadata.title || '';
-                    alert(artist + ' - ' + title);
                     outputFunction(artist, title);
                 });
             });
@@ -111,8 +113,8 @@
         <div class="content">
             <h1 id="artist"></h1>
             <h2 id="song"></h2>
-            <iframe width="420" height="315"
-                src="https://www.youtube.com/embed/XGSy3_Czz8k">
+            <iframe id="youtube" width="420" height="315"
+                src=<"">
             </iframe>
         </div>
     </div>
