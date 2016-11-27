@@ -68,14 +68,14 @@ body{
 	font-family: myFirstFont;
 	font-size: 2em;
 	text-align: center;
-	color: black;
+	color: #3c63cc;
 }
 
 #song{
 	font-family: myFirstFont;
 	font-size: 2em;
 	text-align: center;
-	color: black;
+	color: #3c63cc;
 }
 
 
@@ -91,7 +91,7 @@ body{
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   transition: opacity 500ms;
   visibility: hidden;
   opacity: 0;
@@ -107,7 +107,7 @@ body{
   padding: 20px;
   background: rgba(255,255,255, 0.8);
   border-radius: 5px;
-  width: 35%;
+  width: 45%;
   position: relative;
   transition: all 5s ease-in-out;
 }
@@ -142,4 +142,10 @@ body{
   .popup{
     width: 70%;
   }
+}
+
+#youtube{
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
 }
