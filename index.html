@@ -7,43 +7,67 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
-<script>
-    // Make getUserMedia work for any browser
-    navigator.getUserMedia = navigator.getUserMedia ||
-            navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    <script>
+        // Make getUserMedia work for any browser
+        navigator.getUserMedia = navigator.getUserMedia ||
+                navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-    // In this session, record only audio
-    var session = {
-        audio: true,
-        video: false
-    };
+        // In this session, record only audio
+        var session = {
+            audio: true,
+            video: false
+        };
 
-    // Establish a stream and record
-    var recordRTC = null;
-</script>
-<script>
-    $(document).ready(function() {
-        var recording = false;
-        $("button")[0].addEventListener("click", function() {
-            recording = !recording;
-            if (recording === true) {
-                navigator.getUserMedia(session, function(stream) {
-                    recordRTC = RecordRTC(stream, {
-                        recorderType: StereoAudioRecorder // optionally force WebAudio API to record audio
-                    });
-                    recordRTC.startRecording();
+        // Establish a stream and record
+        var recordRTC = null;
 
-                }, function(error) {
-                    console.log(error);
+        function initializeRecorder() {
+            navigator.getUserMedia(session, function (stream) {
+                recordRTC = RecordRTC(stream, {
+                    recorderType: StereoAudioRecorder // optionally force WebAudio API to record audio
                 });
-            } else {
-                recordRTC.stopRecording(function(audioURL) {
-                    mediaElement.src = audioURL;
+                recordRTC.startRecording();
+
+            }, function (error) {
+                console.log(error);
+            });
+        }
+
+        function stopRecorder() {
+            recordRTC.stopRecording(function (audioURL) {
+                console.log(audioURL);
+                var formData = new FormData();
+                formData.append('audio', recordRTC.getBlob());
+                $.ajax({
+                    type: 'POST',
+                    url: 'identify',
+                    data: formData,
+                    contentType: false,
+                    cache: false,
+                    processData: false
+                }).done(function(data) {
+                    for (var match in data.matches) {
+                        var metadata = data.matches[match].metadata;
+                        console.log(metadata.artist + ' - ' + metadata.title);
+                    }
                 });
-            }
+            });
+        }
+    </script>
+    <script>
+        // Record button
+        $(document).ready(function () {
+            var recording = false;
+            $("button")[0].addEventListener("click", function () {
+                recording = !recording; // change state
+                if (recording === true) {
+                    initializeRecorder();
+                } else {
+                    stopRecorder();
+                }
+            });
         });
-    });
-</script>
-<button>Start</button>
+    </script>
+    <button>Start</button>
 </body>
 </html>
