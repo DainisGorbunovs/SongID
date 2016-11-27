@@ -34,6 +34,3 @@ app.use('/js', express.static('js'));
 app.listen(3000, function() {
     console.log('Listening on localhost:3000');
 });
-
-// Dependencies
-// express, multre, shazamapi-node

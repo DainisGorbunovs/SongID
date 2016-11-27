@@ -1,0 +1,31 @@
+{
+  "name": "songid",
+  "version": "1.0.0",
+  "description": "Web Shazam for song recognition",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DainisGorbunovs/SongID.git"
+  },
+  "keywords": [
+    "song",
+    "ID",
+    "recognition",
+    "shazam"
+  ],
+  "author": "Dainis Gorbunovs, Raul Lozano Martin, Olaf Szmidt, Preslav Venkov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DainisGorbunovs/SongID/issues"
+  },
+  "homepage": "https://github.com/DainisGorbunovs/SongID#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "multer": "^1.2.0",
+    "shazamapi-node": "^1.0.2"
+  }
+}
