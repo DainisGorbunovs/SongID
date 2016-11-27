@@ -107,7 +107,7 @@ body{
   padding: 20px;
   background: rgba(255,255,255, 0.8);
   border-radius: 5px;
-  width: 30%;
+  width: 35%;
   position: relative;
   transition: all 5s ease-in-out;
 }
