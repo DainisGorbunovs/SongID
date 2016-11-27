@@ -22,6 +22,7 @@
         var recordRTC = null;
 
         function initializeRecorder() {
+            $("button")[0].textContent = "Recording";
             navigator.getUserMedia(session, function (stream) {
                 recordRTC = RecordRTC(stream, {
                     recorderType: StereoAudioRecorder // optionally force WebAudio API to record audio
@@ -34,6 +35,7 @@
         }
 
         function stopRecorder() {
+            $("button")[0].textContent = "Stopped";
             recordRTC.stopRecording(function (audioURL) {
                 console.log(audioURL);
                 var formData = new FormData();
@@ -63,6 +65,11 @@
                 recording = !recording; // change state
                 if (recording === true) {
                     initializeRecorder();
+                    setTimeout(function() {
+                        if (recording === true) {
+                            stopRecorder();
+                        }
+                    }, 10000);
                 } else {
                     stopRecorder();
                 }
