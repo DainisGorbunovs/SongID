@@ -1,6 +1,9 @@
 var express = require('express'),
     app = express(),
-    path = require('path');
+    path = require('path'),
+    fs = require('fs'),
+    multer  = require('multer'),
+    upload = multer({ dest: 'uploads/' });
 
 // First page shows the index page
 app.get('/', function(req, res) {
@@ -8,19 +11,20 @@ app.get('/', function(req, res) {
 });
 
 // Response to identify
-app.post('/identify', function(req, res) {
-    res.json({
-        "matches":[
-            {
-                "key":"Xz5UTjcmsakF4B+JtayphlNUiqIj8haFFz5DeUiJhdZ2V963xMHdpjHxK7QmtUEUEA==",
-                "metadata":{
-                    "title":"Invincible",
-                    "artist":"Deaf Kev"
-                },
-                "type":"music"
-            }
-        ]
-    });
+app.post('/identify', upload.single('audio'), function(req, res, next) {
+    var apiKey = 'API-KEY-HERE',
+        shazam = require('shazamapi-node')(apiKey);
+
+    var songPath = req.file.path;
+
+    shazam.identify(songPath)
+        .then((response) => {
+            res.json(response);
+        })
+        .then(() => {
+            // delete file after matching similar songs
+            fs.unlink(songPath);
+        });
 });
 
 // Load static files
@@ -32,4 +36,4 @@ app.listen(3000, function() {
 });
 
 // Dependencies
-// express
+// express, multre, shazamapi-node

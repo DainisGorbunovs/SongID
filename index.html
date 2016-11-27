@@ -38,6 +38,7 @@
                 console.log(audioURL);
                 var formData = new FormData();
                 formData.append('audio', recordRTC.getBlob());
+
                 $.ajax({
                     type: 'POST',
                     url: 'identify',
