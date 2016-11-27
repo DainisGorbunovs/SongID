@@ -15,9 +15,9 @@
 <body>
     <script type="text/javascript">
         function outputFunction(artist, title){
-            window.location.href = "index.html#result";
+            window.location.href = "#result";
             $("#artist").text(artist);
-            $("#title").text(title);
+            $("#song").text(title);
         }
     </script>
 
@@ -65,12 +65,10 @@
                     cache: false,
                     processData: false
                 }).done(function(data) {
-                    if(data.matches.length > 0){
-                        var metadata = data.matches[0].metadata;
-                        outputFunction(metadata.artist, metadata.title);
-                    }
-                    else
-                        outputFunction("","");
+                    var artist = data.matches[0].metadata.artist || '';
+                    var title = data.matches[0].metadata.title || '';
+                    alert(artist + ' - ' + title);
+                    outputFunction(artist, title);
                 });
             });
         }

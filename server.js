@@ -3,7 +3,9 @@ var express = require('express'),
     path = require('path'),
     fs = require('fs'),
     multer  = require('multer'),
-    upload = multer({ dest: 'uploads/' });
+    upload = multer({ dest: 'uploads/' }),
+    YouTube = require('youtube-node'),
+    youTube = new YouTube();
 
 // First page shows the index page
 app.get('/', function(req, res) {
@@ -25,6 +27,24 @@ app.post('/identify', upload.single('audio'), function(req, res, next) {
             // delete file after matching similar songs
             fs.unlink(songPath);
         });
+});
+
+youTube.setKey('API-KEY-HERE');
+// Returns a youtube ID, e.g. `{"videoId":"UuxTn5vC8VM"}`
+app.get('/search/:key', function(req, res) {
+    var key = req.params.key;
+    youTube.search(key, 1, function(error, result) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            var videoId = null;
+            if (result.items.length > 0) {
+                videoId = result.items[0].id.videoId;
+            }
+            res.json({videoId: videoId});
+        }
+    });
 });
 
 // Load static files
