@@ -5,7 +5,8 @@ var express = require('express'),
     multer  = require('multer'),
     upload = multer({ dest: 'uploads/' }),
     YouTube = require('youtube-node'),
-    youTube = new YouTube();
+    youTube = new YouTube(),
+    APIkeys = require('./keys.json');
 
 // First page shows the index page
 app.get('/', function(req, res) {
@@ -14,8 +15,7 @@ app.get('/', function(req, res) {
 
 // Response to identify
 app.post('/identify', upload.single('audio'), function(req, res, next) {
-    var apiKey = 'API-KEY-HERE',
-        shazam = require('shazamapi-node')(apiKey);
+    var shazam = require('shazamapi-node')(APIkeys.shazam);
 
     var songPath = req.file.path;
 
@@ -29,7 +29,7 @@ app.post('/identify', upload.single('audio'), function(req, res, next) {
         });
 });
 
-youTube.setKey('API-KEY-HERE');
+youTube.setKey(APIkeys.youtube);
 // Returns a youtube ID, e.g. `{"videoId":"UuxTn5vC8VM"}` 
 app.get('/search/:key', function(req, res) {
     var key = req.params.key;
